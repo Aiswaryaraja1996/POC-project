@@ -20,7 +20,7 @@ interface Props {
 const Navbar: React.FC<Props> = ({ onChange }) => {
   return (
     <AppBar
-      position="static"
+      position="sticky"
       sx={{
         backgroundColor: "transparent",
         boxShadow: "0 5px 15px 0 rgb(0 0 0 / 6%)",

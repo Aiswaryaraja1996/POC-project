@@ -11,18 +11,26 @@ import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import Checkbox from "@mui/material/Checkbox";
+import FormGroup from "@mui/material/FormGroup";
 
 interface Props {
   option: String | null;
 }
 
 const Formdata: React.FC<Props> = ({ option }) => {
-  const [env, setEnv] = React.useState<string>("");
-  const [value, setValue] = React.useState<string>("");
+  const [env, setEnv] = React.useState<string | undefined>(undefined);
+  const [value, setValue] = React.useState<string | undefined>(undefined);
+  const [envErr, setEnvErr] = React.useState<string | null>("");
+  const [valErr, setValErr] = React.useState<string | null>("");
+  const [showTestCase, setShowTestCase] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     setEnv("");
     setValue("");
+    setShowTestCase(false);
+    setEnvErr("");
+    setValErr("");
   }, [option]);
 
   const handleLobChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,72 +40,108 @@ const Formdata: React.FC<Props> = ({ option }) => {
     setEnv(event.target.value as string);
   };
 
+  const handleDisplayTestCase = () => {
+    if (env && value) {
+      setShowTestCase(true);
+      setEnvErr("");
+      setValErr("");
+    } else {
+      if (!env) setEnvErr("Please select the environment");
+      if (!value) setValErr("Please select the Chat LOB");
+    }
+  };
+
   return option ? (
-    <Box sx={{ width: "40%", margin: "3rem auto" }}>
-      <Paper variant="outlined" sx={{ padding: "2rem" }}>
-        <Typography
-          sx={{ fontSize: "14px", paddingBottom: "1.5rem", color: "#e01719" }}
+    <Paper
+      variant="outlined"
+      sx={{
+        width: "40%",
+        height: "40%",
+        margin: "3rem auto",
+        padding: "2rem",
+      }}
+    >
+      <Typography
+        sx={{ fontSize: "14px", paddingBottom: "1.5rem", color: "#e01719" }}
+      >
+        {option}
+      </Typography>
+      <FormControl>
+        <FormLabel id="demo-row-radio-buttons-group-label">
+          Select Chat LOB
+        </FormLabel>
+        <h6 style={{ color: "#e01719", margin: "0 auto" }}>{valErr}</h6>
+        <RadioGroup
+          aria-labelledby="demo-row-radio-buttons-group-label"
+          name="row-radio-buttons-group"
+          onChange={handleLobChange}
+          value={value}
         >
-          {option}
-        </Typography>
-        <FormControl>
-          <FormLabel id="demo-row-radio-buttons-group-label">
-            Select Chat LOB
-          </FormLabel>
-          <RadioGroup
-            row
-            aria-labelledby="demo-row-radio-buttons-group-label"
-            name="row-radio-buttons-group"
-            onChange={handleLobChange}
-            value={value}
+          <FormControlLabel
+            value="piChat"
+            control={<Radio size="small" />}
+            label="PI Chat"
+          />
+          <FormControlLabel
+            value="claimChat"
+            control={<Radio size="small" />}
+            label="Claim Chat"
+          />
+          <FormControlLabel
+            value="cloudChat"
+            control={<Radio size="small" />}
+            label="Cloud Chat"
+          />
+          <FormControlLabel
+            value="tscChat"
+            control={<Radio size="small" />}
+            label="TSC Chat"
+          />
+        </RadioGroup>
+      </FormControl>
+      <Box sx={{ width: "30%", marginTop: "1.5rem" }}>
+        <FormControl fullWidth variant="standard">
+          <InputLabel id="demo-simple-select-standard-label">
+            Select Env
+          </InputLabel>
+          <Select
+            required
+            labelId="demo-simple-select-standard-label"
+            id="demo-simple-select-standard"
+            value={env}
+            label="Select Env"
+            onChange={handleEnvChange}
           >
-            <FormControlLabel
-              value="piChat"
-              control={<Radio />}
-              label="PI Chat"
-            />
-            <FormControlLabel
-              value="claimChat"
-              control={<Radio />}
-              label="Claim Chat"
-            />
-            <FormControlLabel
-              value="cloudChat"
-              control={<Radio />}
-              label="Cloud Chat"
-            />
-            <FormControlLabel
-              value="tscChat"
-              control={<Radio />}
-              label="TSC Chat"
-            />
-          </RadioGroup>
+            <MenuItem value={"ct"}>UAT</MenuItem>
+            <MenuItem value={"mo"}>MO</MenuItem>
+          </Select>
+          <h6 style={{ color: "#e01719", margin: 0 }}>{envErr}</h6>
         </FormControl>
-        <Box sx={{ width: "30%", marginTop: "1rem" }}>
-          <FormControl fullWidth variant="standard">
-            <InputLabel id="demo-simple-select-standard-label">
-              Select Env
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-standard-label"
-              id="demo-simple-select-standard"
-              value={env}
-              label="Select Env"
-              onChange={handleEnvChange}
-            >
-              <MenuItem value={"uat"}>UAT</MenuItem>
-              <MenuItem value={"mua"}>MUA</MenuItem>
-            </Select>
-          </FormControl>
-        </Box>
-        <Button
-          variant="contained"
-          sx={{ marginTop: "2rem", backgroundColor: "#e01719" }}
-        >
-          Display Test Cases
-        </Button>
-      </Paper>
-    </Box>
+      </Box>
+      <Button
+        variant="contained"
+        sx={{ marginTop: "1rem", backgroundColor: "#e01719" }}
+        onClick={handleDisplayTestCase}
+      >
+        Display Test Cases
+      </Button>
+      {showTestCase ? (
+        <>
+          <FormGroup sx={{ marginTop: "2rem" }}>
+            <InputLabel>Select Test Cases</InputLabel>
+            <FormControlLabel control={<Checkbox />} label="Select All" />
+          </FormGroup>
+          <Button
+            variant="contained"
+            sx={{ marginTop: "1.5rem", backgroundColor: "#e01719" }}
+          >
+            Start Execution
+          </Button>
+        </>
+      ) : (
+        <></>
+      )}
+    </Paper>
   ) : (
     <></>
   );
