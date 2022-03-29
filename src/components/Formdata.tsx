@@ -100,14 +100,12 @@ const Formdata: React.FC<Props> = ({ option }) => {
         </RadioGroup>
       </FormControl>
       <Box sx={{ width: "30%", marginTop: "1.5rem" }}>
-        <FormControl fullWidth variant="standard">
-          <InputLabel id="demo-simple-select-standard-label">
-            Select Env
-          </InputLabel>
+        <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label">Select Env</InputLabel>
           <Select
             required
-            labelId="demo-simple-select-standard-label"
-            id="demo-simple-select-standard"
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
             value={env}
             label="Select Env"
             onChange={handleEnvChange}
@@ -120,7 +118,7 @@ const Formdata: React.FC<Props> = ({ option }) => {
       </Box>
       <Button
         variant="contained"
-        sx={{ marginTop: "1rem", backgroundColor: "#e01719" }}
+        sx={{ marginTop: "2rem", backgroundColor: "#e01719" }}
         onClick={handleDisplayTestCase}
       >
         Display Test Cases
