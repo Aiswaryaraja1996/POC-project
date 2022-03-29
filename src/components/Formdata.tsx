@@ -71,7 +71,7 @@ const Formdata: React.FC<Props> = ({ option }) => {
           Select Chat LOB
         </FormLabel>
         <h6 style={{ color: "#e01719", margin: "0 auto" }}>{valErr}</h6>
-        <RadioGroup
+        <RadioGroup row
           aria-labelledby="demo-row-radio-buttons-group-label"
           name="row-radio-buttons-group"
           onChange={handleLobChange}
